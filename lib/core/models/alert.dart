@@ -41,7 +41,11 @@ class Alert {
         (e) => e.toString() == 'AlertSeverity.${data['severity']}',
         orElse: () => AlertSeverity.low,
       ),
-      timestamp: (data['timestamp'] as Timestamp).toDate(),
+      timestamp: data['timestamp'] != null
+          ? (data['timestamp'] as Timestamp).toDate()
+          : data['createdAt'] != null
+              ? (data['createdAt'] as Timestamp).toDate()
+              : DateTime.now(),
       isAcknowledged: data['isAcknowledged'] ?? false,
       acknowledgedBy: data['acknowledgedBy'],
       acknowledgedAt: data['acknowledgedAt'] != null

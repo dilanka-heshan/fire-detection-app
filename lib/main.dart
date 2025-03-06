@@ -9,21 +9,46 @@ import 'core/theme/app_theme.dart';
 import 'features/navigation/screens/main_navigation.dart';
 import 'features/auth/screens/login_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // Initialize App Check
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.debug,
-    // For iOS, use AppleProvider.appAttest or AppleProvider.deviceCheck
-  );
+    // Initialize App Check with web provider for web platform
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.debug,
+      appleProvider: AppleProvider.deviceCheck,
+      webProvider: ReCaptchaV3Provider('your-recaptcha-v3-site-key'),
+    );
 
-  runApp(const MyApp());
+    // Add these debug prints
+    final auth = FirebaseAuth.instance;
+    print('Initial auth state:');
+    print('User: ${auth.currentUser?.uid}');
+
+    auth.authStateChanges().listen((user) {
+      print('Auth state changed:');
+      print('User: ${user?.uid}');
+    });
+
+    runApp(const MyApp());
+  } catch (e) {
+    print('Error initializing app: $e');
+    // You might want to show an error screen here
+    runApp(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Text('Error initializing app: $e'),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {

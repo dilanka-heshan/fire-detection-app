@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../../../core/models/alert.dart';
+import '../../../core/providers/app_provider.dart';
 
 class AlertList extends StatelessWidget {
   final List<Alert> alerts;
@@ -41,7 +43,9 @@ class AlertList extends StatelessWidget {
                   )
                 : TextButton(
                     onPressed: () {
-                      // TODO: Implement acknowledge functionality
+                      final appProvider =
+                          Provider.of<AppProvider>(context, listen: false);
+                      appProvider.acknowledgeAlert(alert.id);
                     },
                     child: const Text('Acknowledge'),
                   ),

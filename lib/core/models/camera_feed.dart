@@ -38,7 +38,7 @@ class CameraFeed {
         orElse: () => CameraStatus.offline,
       ),
       lastUpdated: (data['lastUpdated'] as Timestamp).toDate(),
-      fileSize: (data['fileSize'] as num).toDouble(),
+      fileSize: (data['fileSize'] as num?)?.toDouble() ?? 0.0,
     );
   }
 
