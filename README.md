@@ -36,7 +36,7 @@ A Flutter-based mobile application for IoT fire detection system with real-time 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/fire_detection_app.git
+https://github.com/dilanka-heshan/fire-detection-app.git
 ```
 
 2. Install dependencies:
